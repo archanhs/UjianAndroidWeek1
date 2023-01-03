@@ -34,7 +34,6 @@ class MainActivity : AppCompatActivity() {
 //        })
     }
     companion object {
-        private val REQUEST_CODE_PERMISSION = 999;
         private val CAMERA_REQUEST_CAPTURE = 666;
     }
 
@@ -45,23 +44,6 @@ class MainActivity : AppCompatActivity() {
         fragManager.commit();
     }
 
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        when(requestCode){
-            REQUEST_CODE_PERMISSION -> {
-                if (grantResults.isNotEmpty() && grantResults[0]== PackageManager.PERMISSION_GRANTED && grantResults[1]== PackageManager.PERMISSION_GRANTED){
-                    captureCamera();
-                }else{
-                    Toast.makeText(this,"Maaf Permission Denied", Toast.LENGTH_LONG).show();
-                }
-            }
-        }
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-    }
     fun captureCamera():Boolean{
         val takeCamera = Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         startActivityForResult(takeCamera, CAMERA_REQUEST_CAPTURE);

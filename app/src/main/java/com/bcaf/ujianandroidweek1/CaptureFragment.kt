@@ -101,5 +101,22 @@ class CaptureFragment : Fragment() {
 
     }
 
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        when(requestCode){
+            CaptureFragment.REQUEST_CODE_PERMISSION -> {
+                if (grantResults.isNotEmpty() && grantResults[0]== PackageManager.PERMISSION_GRANTED && grantResults[1]== PackageManager.PERMISSION_GRANTED){
+                    (activity as MainActivity).captureCamera();
+                }else{
+                    Toast.makeText(activity,"Maaf Permission Denied", Toast.LENGTH_LONG).show()
+                }
+            }
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+    }
+
 
 }

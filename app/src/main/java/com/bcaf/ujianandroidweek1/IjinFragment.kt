@@ -108,7 +108,7 @@ class IjinFragment : Fragment() {
 
         imgCamera1.setOnClickListener(View.OnClickListener {
             if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
-                if(checkPermission()){
+                if(activity?.checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED || activity?.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED){
                     val permissions = arrayOf(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                     requestPermissions(permissions, IjinFragment.REQUEST_CODE_PERMISSION)
                 } else{
@@ -118,7 +118,7 @@ class IjinFragment : Fragment() {
         })
         imgCamera2.setOnClickListener(View.OnClickListener {
             if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
-                if(checkPermission()){
+                if(activity?.checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED || activity?.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED){
                     val permissions = arrayOf(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                     requestPermissions(permissions, IjinFragment.REQUEST_CODE_PERMISSION)
                 } else{
@@ -128,7 +128,7 @@ class IjinFragment : Fragment() {
         })
         imgCamera3.setOnClickListener(View.OnClickListener {
             if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
-                if(checkPermission()){
+                if(activity?.checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED || activity?.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED){
                     val permissions = arrayOf(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                     requestPermissions(permissions, IjinFragment.REQUEST_CODE_PERMISSION)
                 } else{
@@ -162,6 +162,7 @@ class IjinFragment : Fragment() {
         if(requestCode ==  IjinFragment.CAMERA_REQUEST_CAPTURE_1 && resultCode == AppCompatActivity.RESULT_OK){
             val bitmapImage = data?.extras?.get("data") as Bitmap;
             imgCamera1.setImageBitmap(bitmapImage);
+            println(bitmapImage);
             isAddImage1 = true;
             (activity as MainActivity).saveImage(bitmapImage);
         }else if(requestCode ==  IjinFragment.CAMERA_REQUEST_CAPTURE_2 && resultCode == AppCompatActivity.RESULT_OK){
@@ -178,17 +179,6 @@ class IjinFragment : Fragment() {
     }
 
 
-    fun checkPermission():Boolean{
-        if(activity?.checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED || activity?.checkSelfPermission(
-                Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED){
-            val permissions = arrayOf(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-            requestPermissions(permissions, IjinFragment.REQUEST_CODE_PERMISSION)
-            return true;
-        }else{
-            return false;
-        }
-
-    }
 
 
     fun pickDate(form:Number){
@@ -215,6 +205,24 @@ class IjinFragment : Fragment() {
         DatePickerDialog((activity as MainActivity),dateSetListener,c.get(Calendar.YEAR),c.get(Calendar.MONTH),c.get(
             Calendar.DAY_OF_MONTH)).show() //parameter c.get adalah inisialisasi awal kalender yaitu hari ini
     }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        when(requestCode){
+            IjinFragment.REQUEST_CODE_PERMISSION -> {
+                if (grantResults.isNotEmpty() && grantResults[0]== PackageManager.PERMISSION_GRANTED && grantResults[1]== PackageManager.PERMISSION_GRANTED){
+                    (activity as MainActivity).captureCamera();
+                }else{
+                    Toast.makeText(activity,"Maaf Permission Denied", Toast.LENGTH_LONG).show()
+                }
+            }
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+    }
+
 
 
 }
