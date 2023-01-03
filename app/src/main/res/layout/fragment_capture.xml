@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="30dp"
+    android:orientation="vertical"
+    tools:context=".CaptureFragment">
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:paddingTop="20dp"
+        android:text="FOTO SELFIE"
+        android:textAlignment="center"
+        android:textSize="30dp"
+        android:textStyle="bold" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardCamera"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="20dp"
+        android:layout_weight="6">
+
+        <ImageView
+            android:id="@+id/imgCamera"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_weight="6"
+            android:src="@drawable/camera" />
+    </androidx.cardview.widget.CardView>
+
+    <Button
+        android:id="@+id/btnCamera"
+        android:layout_width="193dp"
+        android:layout_height="7dp"
+        android:layout_gravity="center"
+        android:layout_margin="30dp"
+        android:layout_weight="2"
+        android:text="Login Foto Selfie" />
+</LinearLayout>
