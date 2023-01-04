@@ -61,7 +61,9 @@ class SuccessIzinFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         btnDone.setOnClickListener(View.OnClickListener {
-            (activity as MainActivity).loadFragment(MenuFragment.newInstance("",""))
+            //action back fragment 2 kali
+            (activity as MainActivity).supportFragmentManager.popBackStack();
+            (activity as MainActivity).supportFragmentManager.popBackStack();
         })
 
     }
