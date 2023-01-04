@@ -37,6 +37,7 @@ class CaptureFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+    var isAddImage:Boolean = false;
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -85,20 +86,38 @@ class CaptureFragment : Fragment() {
                     val permissions = arrayOf(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                     requestPermissions(permissions,REQUEST_CODE_PERMISSION)
                 } else{
-                    (activity as MainActivity).captureCamera()
+                    captureCamera()
                 }
             }
         })
         btnCamera.setOnClickListener(View.OnClickListener {
-            if (!(activity as MainActivity).isAddImage){
+            if (!isAddImage){
                 Toast.makeText(activity,"Foto Belum Ada", Toast.LENGTH_LONG).show()
             }else{
                 Toast.makeText(activity,"Sukses Check in", Toast.LENGTH_LONG).show()
-                (activity as MainActivity).isAddImage = false;
-                (activity as MainActivity).onBackPressed();
+                isAddImage = false;
+//                (activity as MainActivity).onBackPressed();
+                (activity as MainActivity).loadFragment(SuccessFragment.newInstance("",""))
             }
         })
 
+    }
+
+    fun captureCamera(){
+        val takeCamera = Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(takeCamera, CAMERA_REQUEST_CAPTURE);
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(requestCode == CAMERA_REQUEST_CAPTURE && resultCode == AppCompatActivity.RESULT_OK){
+            val bitmapImage = data?.extras?.get("data") as Bitmap;
+            imgCamera.setImageBitmap(bitmapImage);
+            isAddImage = true;
+            (activity as MainActivity).saveImage(bitmapImage);
+        }else if(resultCode == AppCompatActivity.RESULT_CANCELED){
+            Toast.makeText(activity,"Foto Dibatalkan", Toast.LENGTH_LONG).show()
+        }
     }
 
     override fun onRequestPermissionsResult(
@@ -109,7 +128,7 @@ class CaptureFragment : Fragment() {
         when(requestCode){
             CaptureFragment.REQUEST_CODE_PERMISSION -> {
                 if (grantResults.isNotEmpty() && grantResults[0]== PackageManager.PERMISSION_GRANTED && grantResults[1]== PackageManager.PERMISSION_GRANTED){
-                    (activity as MainActivity).captureCamera();
+                    captureCamera();
                 }else{
                     Toast.makeText(activity,"Maaf Permission Denied", Toast.LENGTH_LONG).show()
                 }

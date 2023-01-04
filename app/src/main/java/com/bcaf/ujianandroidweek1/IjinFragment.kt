@@ -152,7 +152,8 @@ class IjinFragment : Fragment() {
                 isAddImage1 = false;
                 isAddImage2 = false;
                 isAddImage3 = false;
-                (activity as MainActivity).onBackPressed();
+//                (activity as MainActivity).onBackPressed();
+                (activity as MainActivity).loadFragment(SuccessIzinFragment.newInstance("",""))
             }
         })
 
@@ -181,6 +182,8 @@ class IjinFragment : Fragment() {
             imgCamera3.setImageBitmap(bitmapImage);
             isAddImage3 = true;
             (activity as MainActivity).saveImage(bitmapImage);
+        }else if(resultCode == AppCompatActivity.RESULT_CANCELED){
+            Toast.makeText(activity,"Foto Dibatalkan", Toast.LENGTH_LONG).show()
         }
     }
 

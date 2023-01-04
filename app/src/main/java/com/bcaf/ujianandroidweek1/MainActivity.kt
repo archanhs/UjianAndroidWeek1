@@ -19,7 +19,6 @@ import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
-    var isAddImage:Boolean = false;
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -34,7 +33,6 @@ class MainActivity : AppCompatActivity() {
 //        })
     }
     companion object {
-        private val CAMERA_REQUEST_CAPTURE = 666;
     }
 
     fun loadFragment(fragment: Fragment){
@@ -44,23 +42,7 @@ class MainActivity : AppCompatActivity() {
         fragManager.commit();
     }
 
-    fun captureCamera():Boolean{
-        val takeCamera = Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(takeCamera, CAMERA_REQUEST_CAPTURE);
-        return isAddImage;
-    }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if(requestCode == CAMERA_REQUEST_CAPTURE && resultCode == AppCompatActivity.RESULT_OK){
-            val bitmapImage = data?.extras?.get("data") as Bitmap;
-            imgCamera.setImageBitmap(bitmapImage);
-            isAddImage = true;
-            saveImage(bitmapImage);
-        }else if(resultCode == AppCompatActivity.RESULT_CANCELED){
-            Toast.makeText(this,"Foto Dibatalkan", Toast.LENGTH_LONG).show();
-        }
-    }
 
     fun saveImage(bitMap : Bitmap){
         val tanggal = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date());
